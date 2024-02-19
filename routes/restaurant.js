@@ -53,4 +53,18 @@ router.get("/search", (req, res) => {
     .catch((error) => handleError(error, res));
 });
 
+router.get("/youtube-search", async (req, res) => {
+  try {
+    const query = req.query.q;
+    const response = await fetch(
+      `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${query}`
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;
